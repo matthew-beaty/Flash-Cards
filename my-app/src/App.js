@@ -16,8 +16,6 @@ function App() {
   }, []);
 
   const deleteCard = async (id) => {
-    console.log("deleting", id);
-
     fetch(`http://localhost:8080/cards/${id}`, { method: "DELETE" });
   };
 
