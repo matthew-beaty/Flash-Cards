@@ -3,8 +3,8 @@ import "dracula-ui/styles/dracula-ui.css";
 import { Box, Button, Card, Text, Input, Paragraph } from "dracula-ui";
 
 export default function NewCard({}) {
-  const frontRef = React.useRef();
-  const backRef = React.useRef();
+  let frontRef = React.useRef();
+  let backRef = React.useRef();
 
   const [isMinimized, setIsMinimized] = React.useState(true);
 
@@ -15,11 +15,28 @@ export default function NewCard({}) {
       </Card>
     );
   }
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
-    // do stuff
-    console.log("submitting", frontRef, backRef);
+
+    const newCard = {
+      front: frontRef.current.value,
+      back: backRef.current.value,
+    };
+
+    // clear form
+    frontRef.current.value = "";
+    backRef.current.value = "";
+
+    console.log("submitting", newCard);
+
+    // submit new card
+    fetch("http://localhost:8080/cards", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(newCard),
+    });
   };
+
   return (
     <Card style={{ position: "relative" }} onSubmit={onSubmit} p="md">
       <Button
@@ -30,7 +47,7 @@ export default function NewCard({}) {
       </Button>
       <form>
         <Box mb="sm">
-          <label for="front">
+          <label htmlFor="front">
             <Text color="white" weight="bold">
               front
             </Text>
@@ -44,7 +61,7 @@ export default function NewCard({}) {
           />
         </Box>
         <Box>
-          <label for="back">
+          <label htmlFor="back">
             <Text color="white" weight="bold">
               back
             </Text>
