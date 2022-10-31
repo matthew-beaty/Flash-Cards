@@ -1,9 +1,9 @@
 import React from "react";
 import "dracula-ui/styles/dracula-ui.css";
-import { Card, Text, Input, Paragraph } from "dracula-ui";
+import { Card, Text, Button, Input, Paragraph } from "dracula-ui";
 import { randomKudos } from "../lib/helpers";
 
-const FlashCard = ({ card }) => {
+const FlashCard = ({ card, deleteCard }) => {
   const [isCorrect, setIsCorrect] = React.useState(false);
   const input = React.useRef();
 
@@ -15,9 +15,15 @@ const FlashCard = ({ card }) => {
       width="md"
       color={isCorrect ? "pinkPurple" : "purple"}
     >
-      <Paragraph style={{ position: "absolute", right: "10px", top: "10px" }}>
-        HI
-      </Paragraph>
+      <Button
+        onClick={deleteCard}
+        style={{ position: "absolute", left: "0", top: "0" }}
+        color="red"
+      >
+        <Text color="black" weight="bold">
+          X
+        </Text>
+      </Button>
 
       <Paragraph weight="bold" color="white">
         {card.front}
@@ -31,11 +37,7 @@ const FlashCard = ({ card }) => {
         placeholder="guess"
         onChange={() => card.back === input.current.value && setIsCorrect(true)}
       />
-      {isCorrect && (
-        <Paragraph weight="bold" color="green">
-          {`${randomKudos()}!!`}
-        </Paragraph>
-      )}
+      {isCorrect && <Paragraph color="green">{`${randomKudos()}!!`}</Paragraph>}
     </Card>
   );
 };

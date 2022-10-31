@@ -1,6 +1,6 @@
 import React from "react";
 import "dracula-ui/styles/dracula-ui.css";
-import { Box, Button, Card, Text, Input, Paragraph } from "dracula-ui";
+import { Box, Button, Card, Text, Input } from "dracula-ui";
 
 export default function NewCard({}) {
   let frontRef = React.useRef();
@@ -11,7 +11,9 @@ export default function NewCard({}) {
   if (isMinimized) {
     return (
       <Card>
-        <Button onClick={() => setIsMinimized(false)}>+</Button>
+        <Button color="purple" onClick={() => setIsMinimized(false)}>
+          +
+        </Button>
       </Card>
     );
   }
@@ -19,15 +21,14 @@ export default function NewCard({}) {
     e.preventDefault();
 
     const newCard = {
-      front: frontRef.current.value,
-      back: backRef.current.value,
+      front: frontRef.current.value.trim(),
+      back: backRef.current.value.trim(),
     };
 
     // clear form
     frontRef.current.value = "";
     backRef.current.value = "";
-
-    console.log("submitting", newCard);
+    frontRef.current.focus();
 
     // submit new card
     fetch("http://localhost:8080/cards", {
@@ -40,7 +41,8 @@ export default function NewCard({}) {
   return (
     <Card style={{ position: "relative" }} onSubmit={onSubmit} p="md">
       <Button
-        style={{ position: "absolute", right: ".5rem", top: ".5rem" }}
+        style={{ position: "absolute", left: "0", top: "0" }}
+        color="white"
         onClick={() => setIsMinimized(true)}
       >
         -
@@ -58,6 +60,7 @@ export default function NewCard({}) {
             style={{ display: "block" }}
             id="front"
             name="front"
+            required
           />
         </Box>
         <Box>
@@ -72,6 +75,7 @@ export default function NewCard({}) {
             style={{ display: "block" }}
             id="back"
             name="back"
+            required
           />
         </Box>
         <input type="submit" style={{ display: "none" }} />

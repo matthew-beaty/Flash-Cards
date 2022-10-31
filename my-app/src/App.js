@@ -10,28 +10,39 @@ function App() {
   React.useEffect(() => {
     fetch("http://localhost:8080/cards")
       .then((response) => response.json())
-      // 4. Setting *dogImage* to the image url that we received from the response above
       .then((data) => {
-        console.log(data);
         setCards([...data]);
       });
   }, []);
 
+  const deleteCard = async (id) => {
+    console.log("deleting", id);
+
+    fetch(`http://localhost:8080/cards/${id}`, { method: "DELETE" });
+  };
+
   return (
     <div
-      style={{ backgroundColor: "rgb(21, 23, 27)", minHeight: "100vh" }}
+      style={{
+        position: "relative",
+        backgroundColor: "rgb(21, 23, 27)",
+        minHeight: "100vh",
+      }}
       className="App"
     >
       test
       <div style={{ display: "flex", justifyContent: "center" }}>
-        <div>
+        <div style={{ position: "absolute", left: "2rem", top: "2rem" }}>
           <NewCard />
         </div>
 
         <div
           style={{ display: "flex", flexDirection: "column", rowGap: "8px" }}
         >
-          {cards.length > 0 && cards.map((c) => <FlashCard card={c} />)}
+          {cards.length > 0 &&
+            cards.map((c) => (
+              <FlashCard deleteCard={() => deleteCard(c._id)} card={c} />
+            ))}
         </div>
       </div>
     </div>
