@@ -9,6 +9,10 @@ const cardsSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  // tags: {
+  //   type: Array,
+  //   required: true,
+  // }
 });
 
 module.exports = mongoose.model("Card", cardsSchema);
